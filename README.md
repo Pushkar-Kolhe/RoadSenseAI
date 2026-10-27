@@ -1,3 +1,4 @@
+
 # RoadSense AI
 
 Detects road damage (potholes), stores each defect with location, severity, time and photo evidence, and shows them on a map so repairs can be prioritised.
@@ -62,3 +63,7 @@ SQLite: no install, one file, matches your PPT, enough for a single-laptop demo.
 | Notifications | Dashboard title/browser notification and plyer in `detect.py`; untested on your PC |
 
 Do not claim "100% complete". Present tested modules as working, the rest as in development.
+=======
+# RoadSenseAI
+🚧 RoadSense AI 🛣️ is an AI-powered pothole detection system using YOLO and computer vision. 🤖 It identifies road defects, classifies severity, and displays results on an interactive dashboard with Flask, SQLite, and Leaflet.js to support safer roads. 📍📊
+
