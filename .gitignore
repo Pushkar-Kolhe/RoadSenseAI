@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+outputs/
+roboflow_pothole.zip
+yolov8n.pt
+
+.git_backup/

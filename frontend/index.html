@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RoadSense AI | Road Intelligence</title>
+
+  <!-- Leaflet map -->
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+  <!-- Existing stylesheet path -->
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+  <div class="app-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <a href="#overview" class="brand">
+        <div class="brand-icon">R</div>
+        <div>
+          <h2>RoadSense<span> AI</span></h2>
+          <small>ROAD INTELLIGENCE</small>
+        </div>
+      </a>
+
+      <div class="nav-label">WORKSPACE</div>
+
+      <nav class="navigation">
+        <a href="#overview" class="nav-link active">
+          <span>◈</span> Overview
+        </a>
+        <a href="#map-section" class="nav-link">
+          <span>⌖</span> Defect Map
+        </a>
+        <a href="#detections" class="nav-link">
+          <span>▤</span> Detections
+        </a>
+        <a href="#analytics" class="nav-link">
+          <span>▥</span> Analytics
+        </a>
+        <a href="#evidence" class="nav-link">
+          <span>▧</span> Evidence
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="system-card">
+          <div class="system-heading">
+            <span class="status-dot"></span>
+            System overview
+          </div>
+          <p>RoadSense monitoring dashboard</p>
+          <div class="system-row">
+            <span>Backend</span>
+            <span class="system-value">Flask API</span>
+          </div>
+          <div class="system-row">
+            <span>Storage</span>
+            <span class="system-value">SQLite</span>
+          </div>
+          <div class="system-row">
+            <span>Map service</span>
+            <span class="system-value">OpenStreetMap</span>
+          </div>
+        </div>
+
+        <p class="sidebar-footer">RoadSense AI · Prototype</p>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="main-area">
+
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">ROAD INFRASTRUCTURE MONITORING</p>
+          <h1>Road Damage Dashboard</h1>
+          <p class="topbar-subtitle">
+            Detect, monitor and prioritize road defects.
+          </p>
+        </div>
+
+        <div class="topbar-actions">
+          <span class="environment-tag">
+            <span class="status-dot"></span>
+            Prototype
+          </span>
+          <a href="#map-section" class="primary-button">
+            <span>+</span> View Live Map
+          </a>
+        </div>
+      </header>
+
+      <main id="overview">
+
+        <!-- Important notice -->
+        <section class="notice-banner">
+          <span class="notice-icon">i</span>
+          <div>
+            <strong>Prototype data notice</strong>
+            <p>
+              GPS locations may be manual or simulated. Hardware integration
+              and real-time GPS reporting are not yet verified.
+            </p>
+          </div>
+          <span class="notice-badge">SIMULATED DATA POSSIBLE</span>
+        </section>
+
+        <!-- Statistics -->
+        <section class="stats-grid" id="analytics">
+
+          <article class="stat-card">
+            <div class="stat-top">
+              <span class="stat-icon blue-icon">▦</span>
+              <span class="stat-label">ALL DETECTED DEFECTS</span>
+            </div>
+            <div class="stat-number" id="s-total">0</div>
+            <div class="stat-bottom">
+              <span class="stat-description">Recorded road defects</span>
+              <span class="stat-symbol">↗</span>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-top">
+              <span class="stat-icon red-icon">!</span>
+              <span class="stat-label">HIGH SEVERITY</span>
+            </div>
+            <div class="stat-number" id="s-high">0</div>
+            <div class="stat-bottom">
+              <span class="severity-text high-text">High priority</span>
+              <span class="severity-dot high-dot"></span>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-top">
+              <span class="stat-icon orange-icon">◈</span>
+              <span class="stat-label">MEDIUM SEVERITY</span>
+            </div>
+            <div class="stat-number" id="s-med">0</div>
+            <div class="stat-bottom">
+              <span class="severity-text med-text">Needs attention</span>
+              <span class="severity-dot med-dot"></span>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-top">
+              <span class="stat-icon green-icon">✓</span>
+              <span class="stat-label">LOW SEVERITY</span>
+            </div>
+            <div class="stat-number" id="s-low">0</div>
+            <div class="stat-bottom">
+              <span class="severity-text low-text">Lower priority</span>
+              <span class="severity-dot low-dot"></span>
+            </div>
+          </article>
+
+        </section>
+
+        <!-- Map heading -->
+        <section class="section-heading" id="map-section">
+          <div>
+            <p class="eyebrow">GEOGRAPHIC OVERVIEW</p>
+            <h2>Road Defect Intelligence Map</h2>
+            <p>Explore recorded defects and their reported locations.</p>
+          </div>
+          <span class="section-chip">INTERACTIVE MAP</span>
+        </section>
+
+        <!-- Map and map information -->
+        <section class="map-panel">
+          <div class="panel-toolbar">
+            <div>
+              <h3>Defect Locations</h3>
+              <p>Markers represent reported defect locations.</p>
+            </div>
+
+            <div class="map-legend">
+              <span><i class="legend-dot legend-high"></i> High</span>
+              <span><i class="legend-dot legend-medium"></i> Medium</span>
+              <span><i class="legend-dot legend-low"></i> Low</span>
+            </div>
+          </div>
+
+          <div id="map"></div>
+
+          <div class="map-footer">
+            <span><i class="status-dot"></i> Map available when configured</span>
+            <span>Leaflet.js · OpenStreetMap</span>
+          </div>
+        </section>
+
+        <!-- Filters -->
+        <section class="section-heading table-heading" id="detections">
+          <div>
+            <p class="eyebrow">MONITORING CENTRE</p>
+            <h2>Detection Records</h2>
+            <p>Filter and prioritize road repair requirements.</p>
+          </div>
+        </section>
+
+        <section class="records-panel">
+
+          <div class="filters-grid">
+            <label class="filter-field">
+              <span>Severity</span>
+              <select id="f-severity">
+                <option value="">All severities</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+              </select>
+            </label>
+
+            <label class="filter-field">
+              <span>Repair status</span>
+              <select id="f-status">
+                <option value="">All statuses</option>
+                <option value="Reported">Reported</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Repaired">Repaired</option>
+              </select>
+            </label>
+
+            <label class="filter-field">
+              <span>Data source</span>
+              <select id="f-source">
+                <option value="">All sources</option>
+                <option value="real">Real</option>
+                <option value="simulated">Simulated</option>
+              </select>
+            </label>
+
+            <label class="filter-field">
+              <span>Sort records</span>
+              <select id="f-sort">
+                <option value="severity">Priority (severity)</option>
+                <option value="newest">Newest first</option>
+                <option value="oldest">Oldest first</option>
+                <option value="seen">Most re-detected</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="records-toolbar">
+            <div>
+              <h3>Recent Detections</h3>
+              <p>Defects received by the backend</p>
+            </div>
+
+            <span class="refresh-indicator">
+              <i class="status-dot"></i>
+              Refresh interval: 5 seconds
+            </span>
+          </div>
+
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>DEFECT ID</th>
+                  <th>SEVERITY</th>
+                  <th>REPAIR STATUS</th>
+                  <th>TIME (UTC)</th>
+                  <th>SIGHTINGS</th>
+                </tr>
+              </thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
+
+          <p id="empty" class="empty-state" hidden>
+            <span class="empty-icon">⌕</span>
+            <strong>No matching defects</strong>
+            <span>Try changing your filters or run the detector.</span>
+          </p>
+
+          <div class="records-footer">
+            <span>Records are supplied by the RoadSense backend.</span>
+            <span>API: <code>/api/defects</code></span>
+          </div>
+        </section>
+
+        <!-- Evidence area -->
+        <section class="evidence-section" id="evidence">
+          <div>
+            <p class="eyebrow">AI VISION MODULE</p>
+            <h2>Detection Evidence</h2>
+            <p>
+              The vision module saves detected road images with bounding boxes
+              and confidence scores.
+            </p>
+          </div>
+
+          <div class="evidence-card">
+            <div class="evidence-icon">▧</div>
+            <div>
+              <h3>Detection images</h3>
+              <p>
+                Saved images are available in the project's
+                <code>outputs/detections</code> folder. Evidence images
+                submitted to the backend may be stored in
+                <code>outputs/evidence</code>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <footer class="page-footer">
+        <span>RoadSense AI <span class="footer-separator">/</span>
+          Intelligent Road Monitoring</span>
+        <span>YOLOv8 · OpenCV · Flask · SQLite · Leaflet</span>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- Keep the existing JavaScript paths -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
